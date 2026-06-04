@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HantaInfo — Global Hantavirus Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c0f;--bg2:#111318;--bg3:#181c22;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e8eaf0;--muted:#7a7f8e;--accent:#e85d3a;--accent2:#ff8a65;--warn:#f5c518;--safe:#4caf7d;--info:#5b9cf6;--mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;--display:'Syne',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;min-height:100vh;}
+.page{display:none;animation:pageIn 0.35s ease both;}
+.page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* HEADER */
+header{border-bottom:1px solid var(--border2);padding:0 2rem;position:sticky;top:0;z-index:200;background:rgba(10,12,15,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;height:60px;}
+.logo{font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-0.02em;display:flex;align-items:center;gap:10px;cursor:pointer;}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:glowPulse 2s infinite;}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 rgba(232,93,58,0.7)}50%{box-shadow:0 0 0 6px rgba(232,93,58,0)}}
+nav{display:flex;gap:4px;}
+nav a{color:var(--muted);text-decoration:none;font-size:0.82rem;padding:6px 12px;border-radius:6px;transition:all .2s;cursor:pointer;}
+nav a:hover,nav a.active{color:var(--text);background:var(--bg3);}
+.live-badge{font-family:var(--mono);font-size:0.65rem;background:rgba(232,93,58,0.15);border:1px solid rgba(232,93,58,0.4);color:var(--accent2);padding:4px 12px;border-radius:4px;letter-spacing:.1em;cursor:pointer;transition:all .2s;}
+.live-badge:hover{background:rgba(232,93,58,0.28);}
+
+/* HERO */
+.hero{padding:3.5rem 2rem 2.5rem;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+.hero-label{font-family:var(--mono);font-size:0.7rem;letter-spacing:.15em;color:var(--accent);margin-bottom:1rem;text-transform:uppercase;}
+.hero h1{font-family:var(--display);font-size:3rem;font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:1.2rem;}
+.hero h1 span{color:var(--accent);}
+.hero p{color:var(--muted);font-size:.95rem;margin-bottom:1.5rem;max-width:440px;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-primary{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-family:var(--sans);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);}
+.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border2);padding:10px 20px;border-radius:8px;font-family:var(--sans);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s;}
+.btn-secondary:hover{background:var(--bg3);}
+
+/* STATS */
+.stats-strip{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.stats-inner{max-width:1100px;margin:0 auto;padding:1.5rem 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.stat{padding:1rem 1.25rem;border-right:1px solid var(--border);}
+.stat:last-child{border-right:none;}
+.stat-val{font-family:var(--display);font-size:2rem;font-weight:700;line-height:1;margin-bottom:4px;}
+.stat-val.red{color:var(--accent);}.stat-val.warn{color:var(--warn);}.stat-val.blue{color:var(--info);}
+.stat-label{font-size:.75rem;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;}
+
+/* MAIN GRID */
+.main-grid{max-width:1100px;margin:0 auto;padding:2.5rem 2rem;display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;}
+.alert-banner{background:rgba(232,93,58,.08);border:1px solid rgba(232,93,58,.3);border-left:4px solid var(--accent);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;gap:1rem;align-items:flex-start;}
+.alert-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px;}
+.alert-title{font-family:var(--display);font-weight:700;font-size:.95rem;color:var(--accent2);margin-bottom:4px;}
+.alert-text{font-size:.85rem;color:var(--muted);line-height:1.6;}
+.alert-text strong{color:var(--text);}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.card-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-family:var(--display);font-weight:700;font-size:.9rem;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;}
+.card-body{padding:1.25rem 1.5rem;}
+.news-item{padding:1rem 0;border-bottom:1px solid var(--border);}
+.news-item:last-child{border-bottom:none;}
+.news-meta{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-bottom:5px;display:flex;gap:12px;}
+.news-source{color:var(--info);}
+.news-title{font-size:.88rem;font-weight:500;line-height:1.45;margin-bottom:4px;}
+.news-summary{font-size:.8rem;color:var(--muted);line-height:1.55;}
+.region-item{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid var(--border);}
+.region-item:last-child{border-bottom:none;}
+.region-left{display:flex;align-items:center;gap:10px;}
+.region-flag{font-size:1.1rem;}
+.region-name{font-size:.85rem;font-weight:500;}
+.region-detail{font-size:.72rem;color:var(--muted);}
+.risk-pill{font-family:var(--mono);font-size:.65rem;padding:3px 9px;border-radius:20px;font-weight:700;letter-spacing:.05em;}
+.risk-high{background:rgba(232,93,58,.15);color:var(--accent2);border:1px solid rgba(232,93,58,.3);}
+.risk-mid{background:rgba(245,197,24,.12);color:var(--warn);border:1px solid rgba(245,197,24,.3);}
+.risk-low{background:rgba(76,175,125,.12);color:var(--safe);border:1px solid rgba(76,175,125,.3);}
+
+/* INFO SECTIONS */
+section.info-section{max-width:1100px;margin:0 auto;padding:0 2rem 3rem;}
+.section-title{font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.02em;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.section-num{font-family:var(--mono);font-size:.7rem;color:var(--accent);background:rgba(232,93,58,.1);border:1px solid rgba(232,93,58,.2);padding:2px 8px;border-radius:4px;}
+.trans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+.trans-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
+.trans-icon{font-size:1.8rem;margin-bottom:.75rem;}
+.trans-title{font-family:var(--display);font-weight:700;font-size:.9rem;margin-bottom:.5rem;}
+.trans-desc{font-size:.8rem;color:var(--muted);line-height:1.6;}
+.symptom-timeline{display:flex;flex-direction:column;gap:0;position:relative;}
+.symptom-timeline::before{content:'';position:absolute;left:15px;top:20px;bottom:20px;width:1px;background:var(--border2);}
+.symptom-row{display:flex;gap:1.5rem;align-items:flex-start;padding:1rem 0;}
+.symptom-dot{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.65rem;font-weight:700;position:relative;z-index:1;}
+.dot-1{background:rgba(76,175,125,.2);border:1px solid var(--safe);color:var(--safe);}
+.dot-2{background:rgba(245,197,24,.2);border:1px solid var(--warn);color:var(--warn);}
+.dot-3{background:rgba(232,93,58,.2);border:1px solid var(--accent);color:var(--accent);}
+.symptom-content{flex:1;}
+.symptom-phase{font-family:var(--display);font-weight:700;font-size:.88rem;margin-bottom:4px;}
+.symptom-days{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-bottom:8px;}
+.symptom-list{display:flex;flex-wrap:wrap;gap:6px;}
+.symptom-tag{font-size:.75rem;background:var(--bg3);border:1px solid var(--border);padding:3px 10px;border-radius:20px;color:var(--muted);}
+
+/* SOURCES + FOOTER */
+.sources-bar{max-width:1100px;margin:0 auto;padding:1.5rem 2rem 3rem;display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+.source-label{font-family:var(--mono);font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+.source-chip{font-size:.72rem;font-family:var(--mono);background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:20px;text-decoration:none;transition:all .2s;}
+.source-chip:hover{border-color:var(--info);color:var(--info);}
+footer{border-top:1px solid var(--border);padding:1.5rem 2rem;text-align:center;font-size:.72rem;color:var(--muted);font-family:var(--mono);}
+
+/* ===== MAP MODAL ===== */
+.map-overlay{display:none;position:fixed;inset:0;z-index:999;background:rgba(5,7,10,0.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;}
+.map-overlay.open{display:flex;}
+.map-modal{width:95vw;max-width:1060px;background:var(--bg2);border:1px solid var(--border2);border-radius:16px;overflow:hidden;animation:modalIn .3s cubic-bezier(.16,1,.3,1);}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(20px)}to{opacity:1;transform:none}}
+.map-header{padding:.9rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg3);}
+.map-title{font-family:var(--display);font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:10px;}
+.map-close{background:none;border:1px solid var(--border2);color:var(--muted);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.map-close:hover{background:var(--bg3);color:var(--text);}
+.map-clock-bar{padding:.65rem 1.5rem;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.map-clock-time{font-family:var(--mono);font-size:1rem;color:var(--text);letter-spacing:.05em;}
+.map-clock-tz{font-family:var(--mono);font-size:.65rem;color:var(--muted);}
+.map-canvas-wrap{position:relative;background:#060e18;overflow:hidden;}
+#mapSvgWrap{width:100%;min-height:420px;display:flex;align-items:center;justify-content:center;}
+.map-loading{font-family:var(--mono);font-size:.75rem;color:var(--muted);text-align:center;padding:3rem;}
+.map-legend{padding:.75rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center;background:var(--bg3);}
+.legend-item{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.65rem;color:var(--muted);}
+.legend-dot{width:10px;height:10px;border-radius:50%;}
+.map-tooltip{position:absolute;pointer-events:none;background:rgba(10,12,15,.97);border:1px solid var(--border2);border-radius:8px;padding:9px 13px;font-size:.75rem;color:var(--text);font-family:var(--sans);line-height:1.55;max-width:210px;transition:opacity .15s;opacity:0;z-index:10;}
+.map-tooltip.show{opacity:1;}
+.geo-perm-bar{padding:.6rem 1.5rem;background:rgba(91,156,246,.06);border-bottom:1px solid rgba(91,156,246,.15);display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.geo-perm-text{font-size:.75rem;color:var(--muted);}
+.geo-perm-btn{font-family:var(--mono);font-size:.65rem;background:rgba(91,156,246,.1);border:1px solid rgba(91,156,246,.3);color:var(--info);padding:4px 12px;border-radius:4px;cursor:pointer;transition:all .2s;}
+.geo-perm-btn:hover{background:rgba(91,156,246,.2);}
+
+/* Sonar CSS animations */
+@keyframes sonarRing{0%{transform:scale(1);opacity:.8}100%{transform:scale(7);opacity:0}}
+.sonar-r{animation:sonarRing 2.6s cubic-bezier(.1,.8,.5,1) infinite;transform-box:fill-box;transform-origin:center;}
+.sonar-d1{animation-delay:.87s;}
+.sonar-d2{animation-delay:1.74s;}
+
+/* ===== CHAT WIDGET ===== */
+.chat-fab{position:fixed;bottom:2rem;right:2rem;z-index:900;width:52px;height:52px;border-radius:50%;background:var(--accent);border:none;color:#fff;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 20px rgba(232,93,58,.4);display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.chat-fab:hover{background:var(--accent2);transform:scale(1.05);}
+.chat-window{position:fixed;bottom:5.5rem;right:2rem;z-index:900;width:340px;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;overflow:hidden;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:chatIn .25s cubic-bezier(.16,1,.3,1);max-height:480px;}
+.chat-window.open{display:flex;}
+@keyframes chatIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.chat-win-header{background:var(--bg3);padding:.9rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.chat-ai-dot{width:8px;height:8px;border-radius:50%;background:var(--safe);animation:glowPulse 2s infinite;flex-shrink:0;}
+.chat-win-title{font-family:var(--display);font-weight:700;font-size:.85rem;flex:1;}
+.chat-win-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:2px;}
+.chat-messages{flex:1;overflow-y:auto;padding:.75rem;display:flex;flex-direction:column;gap:8px;min-height:200px;}
+.chat-messages::-webkit-scrollbar{width:4px;}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.chat-msg{max-width:88%;padding:8px 12px;border-radius:10px;font-size:.8rem;line-height:1.55;animation:msgPop .2s ease;}
+@keyframes msgPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.chat-msg.user{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:3px;}
+.chat-msg.ai{background:var(--bg3);color:var(--text);align-self:flex-start;border-bottom-left-radius:3px;}
+.chat-msg.thinking{color:var(--muted);font-style:italic;background:var(--bg3);align-self:flex-start;}
+.chat-quick-btns{padding:0 .75rem .5rem;display:flex;flex-wrap:wrap;gap:5px;}
+.chat-quick{font-size:.68rem;background:transparent;border:1px solid var(--border2);color:var(--muted);padding:3px 9px;border-radius:20px;cursor:pointer;transition:all .2s;font-family:var(--sans);}
+.chat-quick:hover{border-color:var(--accent);color:var(--accent2);}
+.chat-input-row{display:flex;gap:6px;padding:.75rem;border-top:1px solid var(--border);background:var(--bg3);}
+#chat-input{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:7px 11px;color:var(--text);font-family:var(--sans);font-size:.8rem;outline:none;transition:border-color .2s;}
+#chat-input:focus{border-color:rgba(232,93,58,.5);}
+#chat-input::placeholder{color:var(--muted);}
+.chat-send{background:var(--accent);color:#fff;border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:.8rem;transition:all .2s;flex-shrink:0;}
+.chat-send:hover{background:var(--accent2);}
+.chat-send:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ===== PROTECTION PAGE ===== */
+.prot-hero{padding:4rem 2rem 2rem;max-width:860px;margin:0 auto;text-align:center;}
+.prot-hero h1{font-family:var(--display);font-size:2.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:1rem;}
+.prot-hero p{color:var(--muted);font-size:.95rem;max-width:520px;margin:0 auto;}
+.prot-content{max-width:860px;margin:0 auto;padding:2rem 2rem 4rem;}
+.prot-step{display:flex;gap:2rem;align-items:flex-start;padding:2rem 0;border-bottom:1px solid var(--border);}
+.prot-step:last-child{border-bottom:none;}
+.prot-num{font-family:var(--mono);font-size:3rem;font-weight:700;color:rgba(232,93,58,.18);line-height:1;flex-shrink:0;width:60px;text-align:right;}
+.prot-step-body{flex:1;}
+.prot-step-title{font-family:var(--display);font-weight:700;font-size:1.15rem;margin-bottom:.75rem;display:flex;align-items:center;gap:10px;}
+.prot-step-desc{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:1rem;}
+.prot-do-dont{display:flex;gap:.75rem;flex-wrap:wrap;}
+.prot-tag{font-size:.75rem;padding:5px 12px;border-radius:20px;display:flex;align-items:center;gap:6px;}
+.prot-do{background:rgba(76,175,125,.1);color:var(--safe);border:1px solid rgba(76,175,125,.25);}
+.prot-dont{background:rgba(232,93,58,.1);color:var(--accent2);border:1px solid rgba(232,93,58,.25);}
+.prot-icon{width:44px;height:44px;border-radius:10px;background:rgba(232,93,58,.1);border:1px solid rgba(232,93,58,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ===== HISTORY PAGE ===== */
+.hist-hero{padding:4rem 2rem 2rem;max-width:860px;margin:0 auto;}
+.hist-hero h1{font-family:var(--display);font-size:2.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.75rem;}
+.hist-hero p{color:var(--muted);font-size:.9rem;}
+.hist-timeline{max-width:760px;margin:0 auto;padding:2rem 2rem 4rem;position:relative;}
+.hist-timeline::before{content:'';position:absolute;left:90px;top:0;bottom:0;width:1px;background:var(--border2);}
+.hist-item{display:flex;gap:2rem;align-items:flex-start;padding:1.75rem 0;}
+.hist-year{font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--accent);width:56px;text-align:right;flex-shrink:0;padding-top:3px;}
+.hist-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:7px;position:relative;z-index:1;}
+.hist-dot.red{background:var(--accent);box-shadow:0 0 8px rgba(232,93,58,.5);}
+.hist-dot.warn{background:var(--warn);box-shadow:0 0 8px rgba(245,197,24,.4);}
+.hist-dot.blue{background:var(--info);}
+.hist-dot.safe{background:var(--safe);}
+.hist-dot.muted{background:var(--muted);}
+.hist-body{flex:1;padding-left:.5rem;}
+.hist-event{font-family:var(--display);font-weight:700;font-size:.95rem;margin-bottom:.35rem;}
+.hist-desc{font-size:.82rem;color:var(--muted);line-height:1.65;}
+.hist-badge{display:inline-block;font-family:var(--mono);font-size:.62rem;padding:2px 8px;border-radius:4px;margin-bottom:.5rem;letter-spacing:.06em;}
+.badge-active{background:rgba(232,93,58,.15);color:var(--accent2);border:1px solid rgba(232,93,58,.3);}
+.badge-past{background:rgba(122,127,142,.12);color:var(--muted);border:1px solid var(--border);}
+
+/* MISC */
+.back-btn{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.7rem;color:var(--muted);cursor:pointer;padding:1.5rem 2rem 0;transition:color .2s;max-width:860px;margin:0 auto;}
+.back-btn:hover{color:var(--text);}
+@media(max-width:768px){
+  .hero,.main-grid{grid-template-columns:1fr;}
+  .hero h1{font-size:2rem;}
+  .stats-inner{grid-template-columns:repeat(2,1fr);}
+  .trans-grid{grid-template-columns:1fr;}
+  nav{display:none;}
+  .chat-window{width:calc(100vw - 2rem);right:1rem;}
+  .prot-step{flex-direction:column;gap:1rem;}
+  .hist-timeline::before{left:70px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" onclick="showPage('main')">
+    <div class="logo-dot"></div>HantaInfo
+  </div>
+  <nav>
+    <a id="nav-main" class="active" onclick="showPage('main')">Güncel</a>
+    <a id="nav-hist" onclick="showPage('history')">Tarihçe</a>
+    <a onclick="scrollMain('bulas')">Bulaş</a>
+    <a onclick="scrollMain('belirtiler')">Belirtiler</a>
+  </nav>
+  <div class="live-badge" onclick="openMap()">● CANLI TAKİP</div>
+</header>
+
+<!-- ==================== MAIN PAGE ==================== -->
+<div id="page-main" class="page active">
+
+<div class="hero">
+  <div>
+    <div class="hero-label">⚠ Global Health Alert — Haziran 2026</div>
+    <h1>Hantavirüs<br><span>Dünya Takip</span><br>& Uyarı</h1>
+    <p>Dünya genelinde aktif salgın verileri, bulaş yolları ve korunma rehberi. WHO, CDC ve ECDC kaynaklı bilgi.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="openMap()">🌍 Dünya Haritası</button>
+      <button class="btn-secondary" onclick="showPage('protect')">Nasıl Korunurum?</button>
+    </div>
+  </div>
+  <div>
+    <!-- ENHANCED ANIMATED VIRUS -->
+    <svg id="virusSvg" viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">
+      <defs>
+        <radialGradient id="vg" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#e85d3a" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#e85d3a" stop-opacity="0.04"/>
+        </radialGradient>
+        <radialGradient id="vg2" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#ff8a65" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#ff8a65" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Outer ambient glow -->
+      <circle cx="160" cy="130" r="110" fill="url(#vg2)">
+        <animate attributeName="r" values="108;118;108" dur="4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.7;1;0.7" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Outer ring -->
+      <circle cx="160" cy="130" r="88" fill="url(#vg)">
+        <animate attributeName="r" values="86;91;86" dur="3.5s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Main body -->
+      <circle cx="160" cy="130" r="68" fill="rgba(232,93,58,0.13)" stroke="rgba(232,93,58,0.55)" stroke-width="1.5">
+        <animate attributeName="r" values="67;71;67" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="stroke-opacity" values="0.4;0.7;0.4" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Inner ring -->
+      <circle cx="160" cy="130" r="47" fill="rgba(232,93,58,0.07)" stroke="rgba(232,93,58,0.25)" stroke-width="1">
+        <animate attributeName="r" values="46;49;46" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+      </circle>
+      <!-- RNA strands with motion -->
+      <path d="M 135 112 Q 155 124 135 138 Q 155 149 135 163" stroke="rgba(255,138,101,0.65)" stroke-width="1.5" fill="none">
+        <animate attributeName="d" values="M 135 112 Q 155 124 135 138 Q 155 149 135 163;M 137 112 Q 157 126 137 140 Q 157 151 137 165;M 135 112 Q 155 124 135 138 Q 155 149 135 163" dur="2.8s" repeatCount="indefinite"/>
+      </path>
+      <path d="M 152 109 Q 172 121 152 135 Q 172 146 152 160" stroke="rgba(255,138,101,0.4)" stroke-width="1.5" fill="none">
+        <animate attributeName="d" values="M 152 109 Q 172 121 152 135 Q 172 146 152 160;M 150 111 Q 170 123 150 137 Q 170 148 150 162;M 152 109 Q 172 121 152 135 Q 172 146 152 160" dur="3.2s" repeatCount="indefinite"/>
+      </path>
+      <path d="M 170 112 Q 190 124 170 138 Q 190 149 170 163" stroke="rgba(255,138,101,0.65)" stroke-width="1.5" fill="none">
+        <animate attributeName="d" values="M 170 112 Q 190 124 170 138 Q 190 149 170 163;M 168 110 Q 188 122 168 136 Q 188 147 168 161;M 170 112 Q 190 124 170 138 Q 190 149 170 163" dur="2.5s" repeatCount="indefinite"/>
+      </path>
+      <!-- Rotating spike group -->
+      <g filter="url(#glow)">
+        <animateTransform attributeName="transform" type="rotate" from="0 160 130" to="360 160 130" dur="28s" repeatCount="indefinite"/>
+        <line x1="160" y1="59" x2="160" y2="27" stroke="rgba(232,93,58,0.75)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="160" cy="24" r="4.5" fill="#e85d3a"/>
+        <line x1="214" y1="77" x2="236" y2="55" stroke="rgba(232,93,58,0.75)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="239" cy="52" r="4.5" fill="#e85d3a"/>
+        <line x1="232" y1="130" x2="264" y2="130" stroke="rgba(232,93,58,0.75)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="267" cy="130" r="4.5" fill="#e85d3a"/>
+        <line x1="214" y1="183" x2="236" y2="205" stroke="rgba(232,93,58,0.75)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="239" cy="208" r="4.5" fill="#e85d3a"/>
+        <line x1="160" y1="201" x2="160" y2="233" stroke="rgba(232,93,58,0.75)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="160" cy="236" r="4.5" fill="#e85d3a"/>
+        <line x1="106" y1="183" x2="84" y2="205" stroke="rgba(232,93,58,0.75)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="81" cy="208" r="4.5" fill="#e85d3a"/>
+        <line x1="88" y1="130" x2="56" y2="130" stroke="rgba(232,93,58,0.75)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="53" cy="130" r="4.5" fill="#e85d3a"/>
+        <line x1="106" y1="77" x2="84" y2="55" stroke="rgba(232,93,58,0.75)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="81" cy="52" r="4.5" fill="#e85d3a"/>
+      </g>
+      <!-- Labels -->
+      <text x="160" y="124" text-anchor="middle" fill="rgba(232,93,58,0.95)" font-family="'Space Mono',monospace" font-size="10" font-weight="700">ANDES</text>
+      <text x="160" y="140" text-anchor="middle" fill="rgba(255,138,101,0.65)" font-family="'Space Mono',monospace" font-size="7.5" letter-spacing="0.1em">HANTAVIRUS</text>
+    </svg>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-val red">13</div><div class="stat-label">Cruise Ship Vakası (Mayıs '26)</div></div>
+    <div class="stat"><div class="stat-val warn">3</div><div class="stat-label">Ölüm — MV Hondius</div></div>
+    <div class="stat"><div class="stat-val red">101</div><div class="stat-label">Arjantin 2025/26 Vakası</div></div>
+    <div class="stat"><div class="stat-val blue">32</div><div class="stat-label">Etkilenen Ülke</div></div>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid" id="haberler">
+  <div>
+    <div class="alert-banner">
+      <div class="alert-icon">🚨</div>
+      <div>
+        <div class="alert-title">Aktif Salgın: MV Hondius Cruise Gemisi — Atlantik Okyanusu</div>
+        <div class="alert-text"><strong>2 Mayıs 2026:</strong> Atlantik'teki cruise gemisinde Andes hantavirüsü salgını. <strong>13 vaka (11 kesin, 2 olası), 3 ölüm.</strong> 32 ülkede 600+ kişi kontakt takibinde. <strong>Andes suşunun nadir insandan insana bulaş potansiyeli</strong> nedeniyle dünya sağlık otoritelerinin gündeminde.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📡 Son Gelişmeler</div>
+        <span style="font-family:var(--mono);font-size:.65rem;color:var(--muted)">WHO / CDC / ECDC</span>
+      </div>
+      <div class="card-body">
+        <div class="news-item"><div class="news-meta"><span class="news-source">WHO</span><span>27 Mayıs 2026</span></div><div class="news-title">MV Hondius: 13. vaka doğrulandı; 32 ülkede kontakt takibi sürüyor</div><div class="news-summary">Andes virüs salgınına ilişkin 3. rapor yayımlandı. Yolcular Saint Helena, Tenerife ve Hollanda'da tahliye edildi.</div></div>
+        <div class="news-item"><div class="news-meta"><span class="news-source">CDC</span><span>2 Haziran 2026</span></div><div class="news-title">CDC: ABD'de cruise ship kaynaklı vaka yok — risk son derece düşük</div><div class="news-summary">Pandemi riskinin son derece düşük olduğu belirtildi. Klinisyenlere Andes virüsü test prosedürleri hatırlatıldı.</div></div>
+        <div class="news-item"><div class="news-meta"><span class="news-source">NaTHNaC</span><span>25 Nisan 2026</span></div><div class="news-title">Arjantin 2025/26: 101 vaka, 32 ölüm — 7 eyalette aktif</div><div class="news-summary">Buenos Aires, Salta, Santa Fe, Chubut, Río Negro, Entre Ríos ve Jujuy eyaletlerinde vakalar görüldü.</div></div>
+        <div class="news-item"><div class="news-meta"><span class="news-source">ECDC</span><span>Q1 2026</span></div><div class="news-title">Finlandiya ve İsveç'te Puumala artışı (mevsimsel)</div><div class="news-summary">Finlandiya yılda ~1.200 vakayla dünya lideri. Q1 2026'da banka faresi döngüsüne bağlı hafif artış.</div></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card" style="margin-bottom:1.5rem">
+      <div class="card-header"><div class="card-title">🗺 Bölgesel Risk</div></div>
+      <div class="card-body" style="padding-top:.75rem">
+        <div class="region-item"><div class="region-left"><span class="region-flag">🇦🇷</span><div><div class="region-name">Arjantin</div><div class="region-detail">101 vaka / 32 ölüm (2025/26)</div></div></div><span class="risk-pill risk-high">YÜKSEK</span></div>
+        <div class="region-item"><div class="region-left"><span class="region-flag">🚢</span><div><div class="region-name">MV Hondius (Atlantik)</div><div class="region-detail">13 vaka / 3 ölüm</div></div></div><span class="risk-pill risk-high">AKTİF</span></div>
+        <div class="region-item"><div class="region-left"><span class="region-flag">🇵🇦</span><div><div class="region-name">Panama</div><div class="region-detail">27 vaka (2025)</div></div></div><span class="risk-pill risk-mid">ORTA</span></div>
+        <div class="region-item"><div class="region-left"><span class="region-flag">🇺🇸</span><div><div class="region-name">ABD (Four Corners)</div><div class="region-detail">Arizona, NM, Colorado</div></div></div><span class="risk-pill risk-mid">ENDEMİK</span></div>
+        <div class="region-item"><div class="region-left"><span class="region-flag">🇫🇮</span><div><div class="region-name">Finlandiya / İsveç</div><div class="region-detail">Puumala, ~1200/yıl</div></div></div><span class="risk-pill risk-mid">MEVSİMSEL</span></div>
+        <div class="region-item"><div class="region-left"><span class="region-flag">🇷🇺</span><div><div class="region-name">Rusya (Avrupa)</div><div class="region-detail">~8.000 vaka/yıl</div></div></div><span class="risk-pill risk-mid">ENDEMİK</span></div>
+        <div class="region-item"><div class="region-left"><span class="region-flag">🇹🇷</span><div><div class="region-name">Türkiye</div><div class="region-detail">Doğrudan risk düşük</div></div></div><span class="risk-pill risk-low">DÜŞÜK</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">⚡ Hızlı Gerçekler</div></div>
+      <div class="card-body" style="font-size:.82rem;color:var(--muted)">
+        <div style="display:flex;gap:8px;margin-bottom:10px"><span style="color:var(--accent);flex-shrink:0">▸</span><span>Hantavirüs <strong style="color:var(--text)">kemirgen kaynaklı</strong> RNA virüsüdür.</span></div>
+        <div style="display:flex;gap:8px;margin-bottom:10px"><span style="color:var(--accent);flex-shrink:0">▸</span><span><strong style="color:var(--accent2)">Andes virüsü</strong> istisnai olarak insandan insana bulaşabilir.</span></div>
+        <div style="display:flex;gap:8px;margin-bottom:10px"><span style="color:var(--accent);flex-shrink:0">▸</span><span>HPS ölüm oranı <strong style="color:var(--accent)">%25–40</strong>.</span></div>
+        <div style="display:flex;gap:8px;margin-bottom:10px"><span style="color:var(--accent);flex-shrink:0">▸</span><span>Virüs yüzeylerde <strong style="color:var(--text)">birkaç gün</strong> canlı kalır.</span></div>
+        <div style="display:flex;gap:8px"><span style="color:var(--safe);flex-shrink:0">▸</span><span><strong style="color:var(--text)">Onaylı aşı yok.</strong> Erken teşhis hayat kurtarır.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BULAŞ -->
+<section class="info-section" id="bulas">
+  <div class="section-title"><span class="section-num">02</span>Bulaş Yolları</div>
+  <div class="trans-grid">
+    <div class="trans-card"><div class="trans-icon">💨</div><div class="trans-title">Hava Yolu (Aerosol)</div><div class="trans-desc">En yaygın bulaş. Kemirgen dışkısı, idrar veya tükürüğünden havaya karışan partiküllerin solunması. Kapalı, havalandırılmamış alanlarda risk yüksek.</div></div>
+    <div class="trans-card"><div class="trans-icon">🖐</div><div class="trans-title">Doğrudan Temas</div><div class="trans-desc">Kemirgen ısırması veya tırmalamasıyla kan yoluyla bulaş. Enfekte dışkıya temas sonrası göz-ağız-buruna değmek riski artırır.</div></div>
+    <div class="trans-card"><div class="trans-icon">🍽</div><div class="trans-title">Sindirim Yolu</div><div class="trans-desc">Enfekte kemirgen dışkısıyla kirlenmiş su veya gıdaların tüketilmesi. Depolarda korumasız bırakılan gıdalar risk taşır.</div></div>
+    <div class="trans-card" style="border-left:2px solid rgba(232,93,58,.5)"><div class="trans-icon">🧑‍🤝‍🧑</div><div class="trans-title">İnsandan İnsana <span style="font-size:.7rem;color:var(--accent)">(Sadece Andes)</span></div><div class="trans-desc">Yalnızca Andes suşunda belgelenmiş. Yakın temas yoluyla nadir de olsa mümkün. MV Hondius salgını bu özellik nedeniyle inceleniyor.</div></div>
+    <div class="trans-card"><div class="trans-icon">🐀</div><div class="trans-title">Doğal Rezervuarlar</div><div class="trans-desc">Sin Nombre → Geyik faresi (ABD). Andes → Uzun kuyruklu pirinç faresi (G.Amerika). Puumala → Banka faresi (Avrupa). Seoul → Ev sıçanı (küresel).</div></div>
+    <div class="trans-card" style="border-left:2px solid rgba(76,175,125,.5)"><div class="trans-icon">🐕</div><div class="trans-title">Evcil Hayvanlar</div><div class="trans-desc"><span style="color:var(--safe)">Doğrudan bulaştırmaz.</span> Kedi ve köpekler hasta kemirgenleri eve taşıyarak dolaylı temas riskini artırabilir.</div></div>
+  </div>
+</section>
+
+<!-- BELİRTİLER -->
+<section class="info-section" id="belirtiler">
+  <div class="section-title"><span class="section-num">03</span>Belirtiler & Klinik Seyir</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+    <div>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:1.5rem">HPS — Hantavirüs Pulmoner Sendromu (Amerika)</p>
+      <div class="symptom-timeline">
+        <div class="symptom-row"><div class="symptom-dot dot-1">1-2</div><div class="symptom-content"><div class="symptom-phase">Prodromal Faz</div><div class="symptom-days">İnkübasyon: 1–8 hafta • İlk 3–5 gün</div><div class="symptom-list"><span class="symptom-tag">Ateş</span><span class="symptom-tag">Yorgunluk</span><span class="symptom-tag">Kas ağrısı</span><span class="symptom-tag">Baş ağrısı</span><span class="symptom-tag">Bulantı</span></div></div></div>
+        <div class="symptom-row"><div class="symptom-dot dot-2">3-7</div><div class="symptom-content"><div class="symptom-phase">Kardiyopulmoner Faz</div><div class="symptom-days">Gün 3–7 • Kritik dönem</div><div class="symptom-list"><span class="symptom-tag">Nefes darlığı</span><span class="symptom-tag">Kuru öksürük</span><span class="symptom-tag">Düşük tansiyon</span><span class="symptom-tag">Akciğer ödemi</span></div></div></div>
+        <div class="symptom-row"><div class="symptom-dot dot-3">7+</div><div class="symptom-content"><div class="symptom-phase">Kritik Faz</div><div class="symptom-days">Gün 7+ • Hızlı kötüleşme</div><div class="symptom-list"><span class="symptom-tag">Solunum yetmezliği</span><span class="symptom-tag">Şok</span><span class="symptom-tag">Organ yetmezliği</span></div></div></div>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:1.5rem">HFRS — Hemorajik Ateş + Renal Sendrom (Avrupa/Asya)</p>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;font-size:.82rem">
+        <div style="display:flex;gap:10px;margin-bottom:12px"><span style="color:var(--warn);flex-shrink:0">●</span><span><strong style="color:var(--text)">Ani ateş</strong> — 38–40°C, titreme</span></div>
+        <div style="display:flex;gap:10px;margin-bottom:12px"><span style="color:var(--warn);flex-shrink:0">●</span><span><strong style="color:var(--text)">Kanama belirtileri</strong> — Peteşi, burun kanaması</span></div>
+        <div style="display:flex;gap:10px;margin-bottom:12px"><span style="color:var(--warn);flex-shrink:0">●</span><span><strong style="color:var(--text)">Akut böbrek yetmezliği</strong> — Azalmış idrar</span></div>
+        <div style="display:flex;gap:10px;margin-bottom:12px"><span style="color:var(--warn);flex-shrink:0">●</span><span><strong style="color:var(--text)">Görme bozukluğu</strong> — Bulanık görme</span></div>
+        <div style="display:flex;gap:10px"><span style="color:var(--safe);flex-shrink:0">●</span><span>Ölüm oranı: <strong style="color:var(--text)">%1–15</strong> (HPS'e göre düşük)</span></div>
+        <div style="margin-top:1.25rem;padding:.9rem;background:rgba(232,93,58,.05);border:1px solid rgba(232,93,58,.2);border-radius:8px;font-size:.78rem;color:var(--muted)">⚠ Kemirgen temasından sonra bu belirtileri yaşıyorsanız <strong style="color:var(--accent2)">derhal acil servise gidin.</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sources-bar">
+  <span class="source-label">Kaynaklar</span>
+  <a class="source-chip" href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON604" target="_blank">WHO DON604</a>
+  <a class="source-chip" href="https://www.cdc.gov/hantavirus/situation-summary/index.html" target="_blank">CDC Durum Özeti</a>
+  <a class="source-chip" href="https://travelhealthpro.org.uk/disease/66/hantavirus" target="_blank">NaTHNaC</a>
+  <a class="source-chip" href="https://www.ecdc.europa.eu" target="_blank">ECDC</a>
+</div>
+<footer>HantaInfo — Global Hantavirus Intelligence Platform. Bilgi amaçlıdır, tıbbi tavsiye değildir. | Haziran 2026</footer>
+</div><!-- /page-main -->
+
+<!-- ==================== PROTECTION PAGE ==================== -->
+<div id="page-protect" class="page">
+  <div class="back-btn" onclick="showPage('main')">← Ana Sayfa</div>
+  <div class="prot-hero">
+    <h1>Hantavirüsten<br><span style="color:var(--safe)">Korunma Rehberi</span></h1>
+    <p style="color:var(--muted);margin-top:.75rem">WHO ve CDC verilerine dayalı, kanıta dayalı korunma protokolü.</p>
+  </div>
+  <div class="prot-content">
+
+    <div class="prot-step">
+      <div class="prot-num">01</div>
+      <div class="prot-step-body">
+        <div class="prot-step-title">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="rgba(232,93,58,0.6)" stroke-width="1.5"/><path d="M6 10h8M10 6v8" stroke="rgba(232,93,58,0.6)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Kemirgenlerle Teması Engelleyin
+        </div>
+        <div class="prot-step-desc">Hantavirüs insanlara neredeyse istisnasız kemirgen yoluyla ulaşır. Kemirgenleri evinizden uzak tutmak en etkili önlemdir.</div>
+        <div class="prot-do-dont">
+          <span class="prot-tag prot-do">✓ Delikleri ve çatlakları tıkayın</span>
+          <span class="prot-tag prot-do">✓ Gıdaları kapalı kaplarda saklayın</span>
+          <span class="prot-tag prot-do">✓ Çöp bidonlarını kapalı tutun</span>
+          <span class="prot-tag prot-dont">✗ Ölü/canlı kemirgene çıplak elle dokunmayın</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prot-step">
+      <div class="prot-num">02</div>
+      <div class="prot-step-body">
+        <div class="prot-step-title">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="3" stroke="rgba(232,93,58,0.6)" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="rgba(76,175,125,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Kişisel Koruyucu Ekipman Kullanın
+        </div>
+        <div class="prot-step-desc">Kırsal alanlarda temizlik, ahır, depo veya uzun süre kapalı kalmış mekânlarda çalışırken mutlaka KKE kullanın.</div>
+        <div class="prot-do-dont">
+          <span class="prot-tag prot-do">✓ N95 / FFP2 maske</span>
+          <span class="prot-tag prot-do">✓ Nitril eldiven (çift kat)</span>
+          <span class="prot-tag prot-do">✓ Tulum ve gözlük (yoğun temas durumunda)</span>
+          <span class="prot-tag prot-dont">✗ Surgical maske yetersizdir</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prot-step">
+      <div class="prot-num">03</div>
+      <div class="prot-step-body">
+        <div class="prot-step-title">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v14M3 10h14" stroke="rgba(232,93,58,0.6)" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="7" stroke="rgba(232,93,58,0.3)" stroke-width="1"/></svg>
+          Doğru Temizlik Yöntemi
+        </div>
+        <div class="prot-step-desc">Kemirgen dışkısı veya idrara maruz kalmış yüzeylerin temizliği hayati önem taşır. Yanlış yöntem virüsü havaya karıştırır.</div>
+        <div class="prot-do-dont">
+          <span class="prot-tag prot-do">✓ Önce %10 çamaşır suyu ile ıslatın (10 dak. bekleyin)</span>
+          <span class="prot-tag prot-do">✓ Islak bezle silin, torbalayın</span>
+          <span class="prot-tag prot-dont">✗ KESİNLİKLE kuru süpürmeyin</span>
+          <span class="prot-tag prot-dont">✗ Vakum kullanmayın</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prot-step">
+      <div class="prot-num">04</div>
+      <div class="prot-step-body">
+        <div class="prot-step-title">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 7v6c0 3 3 5 7 5s7-2 7-5V7l-7-5z" stroke="rgba(232,93,58,0.6)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          Havalandırma & Kapalı Alanlar
+        </div>
+        <div class="prot-step-desc">Uzun süre boş kalmış mekânlar özellikle tehlikelidir. Virüs bulaşmış aerosol hava içinde günlerce asılı kalabilir.</div>
+        <div class="prot-do-dont">
+          <span class="prot-tag prot-do">✓ Girmeden önce kapı/pencereleri açın, 30 dak. havalandırın</span>
+          <span class="prot-tag prot-do">✓ Havalandırırken içeride durmayın</span>
+          <span class="prot-tag prot-dont">✗ Fare izli mekâna direkt girmeyin</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prot-step">
+      <div class="prot-num">05</div>
+      <div class="prot-step-body">
+        <div class="prot-step-title">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="rgba(76,175,125,0.6)" stroke-width="1.5"/><path d="M10 6v4l3 3" stroke="rgba(76,175,125,0.6)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Belirtileri İzleyin — Erken Teşhis
+        </div>
+        <div class="prot-step-desc">Virüs maruziyetinden sonra 1–8 haftaya kadar belirti göstermeyebilirsiniz. Kırsal alandan döndükten sonra kendinizi izleyin.</div>
+        <div class="prot-do-dont">
+          <span class="prot-tag prot-do">✓ Ateş + kas ağrısı + nefes darlığı → acil servis</span>
+          <span class="prot-tag prot-do">✓ Doktora maruziyeti mutlaka anlatın</span>
+          <span class="prot-tag prot-dont">✗ Belirtileri hafife almayın, gecikmek ölümcül olabilir</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prot-step">
+      <div class="prot-num">06</div>
+      <div class="prot-step-body">
+        <div class="prot-step-title">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 10h10M10 5l5 5-5 5" stroke="rgba(232,93,58,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Kamp & Doğa Aktiviteleri
+        </div>
+        <div class="prot-step-desc">Kamp alanları, orman kulübeleri ve kırsal konaklama tesisleri özellikle risk taşır. Önlemler alınmadan gece geçirmeyin.</div>
+        <div class="prot-do-dont">
+          <span class="prot-tag prot-do">✓ Çadırı kemirgen geçişine kapalı tutun</span>
+          <span class="prot-tag prot-do">✓ Yiyecekleri asmak veya sızdırmaz kutu kullanın</span>
+          <span class="prot-tag prot-do">✓ Fare izi varsa bölgeyi değiştirin</span>
+          <span class="prot-tag prot-dont">✗ Yerden su içmeyin, kirlenmiş su içmeyin</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <footer style="border-top:1px solid var(--border);padding:1.5rem 2rem;text-align:center;font-size:.72rem;color:var(--muted);font-family:var(--mono)">HantaInfo — Korunma bilgisi CDC, WHO ve ECDC kılavuzlarına dayanmaktadır.</footer>
+</div><!-- /page-protect -->
+
+<!-- ==================== HISTORY PAGE ==================== -->
+<div id="page-history" class="page">
+  <div class="back-btn" onclick="showPage('main')">← Ana Sayfa</div>
+  <div class="hist-hero" style="padding:3rem 2rem 2rem;max-width:760px;margin:0 auto;">
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.15em;margin-bottom:.75rem;text-transform:uppercase">Kronoloji</div>
+    <h1 style="font-family:var(--display);font-size:2.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.75rem">Hantavirüs<br><span style="color:var(--accent)">Tarihçesi</span></h1>
+    <p style="color:var(--muted);font-size:.9rem">Kore Savaşı'ndan bugünkü küresel salgına uzanan yolculuk.</p>
+  </div>
+
+  <div class="hist-timeline">
+
+    <div class="hist-item">
+      <div class="hist-year">1951</div>
+      <div class="hist-dot blue" style="margin-top:6px"></div>
+      <div class="hist-body">
+        <div class="hist-badge badge-past">TARİHSEL</div>
+        <div class="hist-event">Kore Savaşı — Gizemli Hemorajik Ateş</div>
+        <div class="hist-desc">BM kuvvetleri arasında böbrek yetmezliğiyle seyreden gizemli bir hemorajik ateş salgını patlak verdi. Binlerce asker etkilendi. Hastalık "Kore hemorajik ateşi" olarak adlandırıldı ancak sebebi bilinmiyordu. Bu olay, viroloji tarihinin ilk büyük hantavirüs araştırmalarını başlattı.</div>
+      </div>
+    </div>
+
+    <div class="hist-item">
+      <div class="hist-year">1976</div>
+      <div class="hist-dot warn" style="margin-top:6px"></div>
+      <div class="hist-body">
+        <div class="hist-badge badge-past">KEŞİF</div>
+        <div class="hist-event">Hantaan Virüsü İzole Edildi</div>
+        <div class="hist-desc">Koreli virolog Ho Wang Lee, Kore'nin Hantaan nehri havzasında yaşayan geniş çizgili banka faresinde virüsü izole etti. Hantavirus familyasının ilk tanımlanmış üyesi olan Hantaan virüsü, tüm sınıfın adını bu nehirden aldı. HFRS (Hemorajik Ateş + Renal Sendrom) ilk kez net olarak tanımlandı.</div>
+      </div>
+    </div>
+
+    <div class="hist-item">
+      <div class="hist-year">1983</div>
+      <div class="hist-dot muted" style="margin-top:6px"></div>
+      <div class="hist-body">
+        <div class="hist-badge badge-past">SINIFLANDIRMA</div>
+        <div class="hist-event">Bunyaviridae Familyasına Dahil Edildi</div>
+        <div class="hist-desc">Uluslararası Virüs Sınıflandırma Komitesi, hantavirüsleri Bunyaviridae familyasında ayrı bir cins olarak tanımladı. Avrupa'da yaygın olan Puumala ve Dobrava virüsleri de bu dönemde keşfedildi. Finlandiya'da "vole ateşi" salgınları düzenli olarak raporlanmaya başlandı.</div>
+      </div>
+    </div>
+
+    <div class="hist-item">
+      <div class="hist-year">1993</div>
+      <div class="hist-dot red" style="margin-top:6px"></div>
+      <div class="hist-body">
+        <div class="hist-badge badge-past">BÜYÜK SALGINI</div>
+        <div class="hist-event">Four Corners Salgını — HPS Keşfedildi</div>
+        <div class="hist-desc">ABD'nin New Mexico, Arizona, Colorado ve Utah sınırlarının kesiştiği "Four Corners" bölgesinde sağlıklı gençlerin ani akciğer yetmezliğiyle ölmesi dünya gündemine girdi. CDC araştırmaları Sin Nombre virüsünü tespit etti. HPS (Hantavirüs Pulmoner Sendromu) tanımlandı. Başlangıç ölüm oranı %76'ya ulaştı. Geyik faresi doğal rezervuar olarak tanımlandı.</div>
+      </div>
+    </div>
+
+    <div class="hist-item">
+      <div class="hist-year">1995</div>
+      <div class="hist-dot warn" style="margin-top:6px"></div>
+      <div class="hist-body">
+        <div class="hist-badge badge-past">ANDES VİRÜSÜ</div>
+        <div class="hist-event">İnsandan İnsana Bulaş — İlk Belgeleme</div>
+        <div class="hist-desc">Arjantin'de Andes virüsünün insandan insana bulaşabildiği ilk kez belgelendi. Bu, diğer tüm hantavirüslerden temelden farklı bir özellikti. Araştırmalar, bulaşın yakın temas (damlacık ve sekresyonlar) yoluyla gerçekleştiğini gösterdi. Bu keşif hantavirüslerin pandemi potansiyelini yeniden değerlendirmeye yol açtı.</div>
+      </div>
+    </div>
+
+    <div class="hist-item">
+      <div class="hist-year">2010</div>
+      <div class="hist-dot blue" style="margin-top:6px"></div>
+      <div class="hist-body">
+        <div class="hist-badge badge-past">ARAŞTIRMA</div>
+        <div class="hist-event">Seoul Virüsü — Küresel Yayılım Anlaşıldı</div>
+        <div class="hist-desc">Ev sıçanı (Rattus norvegicus) tarafından taşınan Seoul virüsünün küresel ölçekte yayıldığı kapsamlı araştırmalarla teyit edildi. Evcil sıçan sahiplerinde vakalar saptandı. Bu dönemde hantavirüsün gerçek anlamda küresel bir tehdit olduğu anlaşıldı.</div>
+      </div>
+    </div>
+
+    <div class="hist-item">
+      <div class="hist-year">2012</div>
+      <div class="hist-dot red" style="margin-top:6px"></div>
+      <div class="hist-body">
+        <div class="hist-badge badge-past">YOSEMİTE</div>
+        <div class="hist-event">Yosemite Ulusal Parkı Salgını — 10 Vaka, 3 Ölüm</div>
+        <div class="hist-desc">California'daki Yosemite Ulusal Parkı'nda kabin kiralayanlar arasında Sin Nombre virüsü salgını patlak verdi. Yalıtımlı çadır kabinlerinde fare yuvaları tespit edildi. 10 kişi etkilendi, 3'ü hayatını kaybetti. Parkta kullanılan 91 kabin sökülüp imha edildi. Bu olay, turizm tesislerinde hantavirüs riskini kamuoyuna taşıdı.</div>
+      </div>
+    </div>
+
+    <div class="hist-item">
+      <div class="hist-year">2025</div>
+      <div class="hist-dot warn" style="margin-top:6px"></div>
+      <div class="hist-body">
+        <div class="hist-badge badge-past">ARJANTİN</div>
+        <div class="hist-event">Güney Amerika'da Rekor Sezon</div>
+        <div class="hist-desc">Arjantin'de 2025/26 sezonu başından itibaren 101 vaka ve 32 ölüm kayıt altına alındı. Buenos Aires, Salta, Santa Fe, Chubut, Río Negro, Entre Ríos ve Jujuy eyaletlerinde vakalar rapor edildi. Panama'da da 27 vaka görüldü.</div>
+      </div>
+    </div>
+
+    <div class="hist-item">
+      <div class="hist-year">2026</div>
+      <div class="hist-dot red" style="margin-top:6px;animation:glowPulse 1.5s infinite;"></div>
+      <div class="hist-body">
+        <div class="hist-badge badge-active">AKTİF SALGIN</div>
+        <div class="hist-event">MV Hondius Cruise Gemisi — Tarihin İlk Cruise Ship Salgını</div>
+        <div class="hist-desc">2 Mayıs 2026'da WHO'ya Atlantik'teki MV Hondius gemisinde Andes hantavirüsü vakası bildirildi. 27 Mayıs itibarıyla 13 vaka (11 kesin, 2 olası), 3 ölüm. 32 ülkede 600'den fazla kişi kontakt takibine alındı. Andes virüsünün insandan insana bulaşma özelliği nedeniyle olağandışı bir salgın niteliği taşımaktadır. Dünya sağlık otoritelerinin gündemine girmiş, pandemi riskinin son derece düşük olduğu açıklanmıştır.</div>
+      </div>
+    </div>
+
+  </div>
+  <footer style="border-top:1px solid var(--border);padding:1.5rem 2rem;text-align:center;font-size:.72rem;color:var(--muted);font-family:var(--mono)">HantaInfo — Tarihçe, WHO, CDC ve bilimsel literatüre dayanmaktadır.</footer>
+</div><!-- /page-history -->
+
+<!-- ==================== MAP MODAL ==================== -->
+<div class="map-overlay" id="mapOverlay" onclick="closeMapOutside(event)">
+  <div class="map-modal" id="mapModal">
+    <div class="map-header">
+      <div class="map-title"><div class="logo-dot"></div>Dünya Hantavirüs Risk Haritası</div>
+      <button class="map-close" onclick="closeMap()">✕</button>
+    </div>
+    <div class="map-clock-bar">
+      <div>
+        <div class="map-clock-time" id="mapClockTime">--:--:--</div>
+        <div class="map-clock-tz" id="mapClockTz">Saat dilimi algılanıyor...</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);text-align:right">
+        <div id="mapDateStr">--</div>
+        <div id="mapCaseCount" style="color:var(--accent)">● Aktif vakalar yanıp sönüyor</div>
+      </div>
+    </div>
+    <div id="geoPermBar" class="geo-perm-bar">
+      <span class="geo-perm-text">📍 Haritada konumunuzu görmek ister misiniz?</span>
+      <button class="geo-perm-btn" onclick="requestGeo()">Konumuma İzin Ver</button>
+    </div>
+    <div class="map-canvas-wrap">
+      <div id="mapSvgWrap">
+        <div class="map-loading" id="mapLoading">🌐 Dünya haritası yükleniyor...</div>
+      </div>
+      <div class="map-tooltip" id="mapTooltip"></div>
+    </div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#e85d3a"></div>Yüksek Risk / Aktif Salgın</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f5c518"></div>Orta Risk / Endemik</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4caf7d"></div>Düşük Risk</div>
+      <div class="legend-item" style="margin-left:auto"><div class="legend-dot" style="background:#5b9cf6;animation:glowPulse 2s infinite"></div>Konumunuz</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CHAT WIDGET ==================== -->
+<button class="chat-fab" onclick="toggleChat()" title="AI Asistan">💬</button>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-win-header">
+    <div class="chat-ai-dot"></div>
+    <div class="chat-win-title">HantaInfo AI</div>
+    <button class="chat-win-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg ai">Merhaba! Hantavirüs hakkında merak ettiğiniz her şeyi sorabilirsiniz.</div>
+  </div>
+  <div class="chat-quick-btns">
+    <span class="chat-quick" onclick="sendQuick('Andes virüsü neden tehlikeli?')">Andes neden tehlikeli?</span>
+    <span class="chat-quick" onclick="sendQuick('Türkiye için risk var mı?')">Türkiye riski?</span>
+    <span class="chat-quick" onclick="sendQuick('Hantavirüs belirtileri neler?')">Belirtiler?</span>
+    <span class="chat-quick" onclick="sendQuick('Hantavirüs tedavisi var mı?')">Tedavi var mı?</span>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chat-input" placeholder="Soru yaz..." onkeydown="if(event.key==='Enter')sendChat()"/>
+    <button class="chat-send" id="chat-send-btn" onclick="sendChat()">→</button>
+  </div>
+</div>
+
+<!-- D3 + TopoJSON from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+
+<script>
+/* ===== PAGE NAV ===== */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); });
+  const page = document.getElementById('page-' + id);
+  page.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + id);
+  if(navEl) navEl.classList.add('active');
+}
+function scrollMain(id) {
+  showPage('main');
+  setTimeout(()=>{ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
+}
+
+/* ===== OUTBREAK DATA ===== */
+const OUTBREAKS = [
+  {name:'Arjantin (Buenos Aires, Patagonia, Salta)',lat:-36,lon:-63,risk:'high',cases:101,deaths:32,virus:'Andes',note:'2025/26 sezonu'},
+  {name:'MV Hondius — Atlantik Okyanusu',lat:14,lon:-27,risk:'high',cases:13,deaths:3,virus:'Andes',note:'Aktif cruise ship salgını, Mayıs 2026'},
+  {name:'Panama',lat:9,lon:-80,risk:'mid',cases:27,deaths:null,virus:'Choclo',note:'2025 sezonu'},
+  {name:'ABD — Four Corners (AZ, NM, CO)',lat:37,lon:-108,risk:'mid',cases:6,deaths:null,virus:'Sin Nombre',note:'2025 Arizona vakası; endemik bölge'},
+  {name:'Finlandiya / Kuzey İsveç',lat:65,lon:26,risk:'mid',cases:1200,deaths:null,virus:'Puumala',note:'Yıllık endemik (~1200 vaka/yıl); Q1 2026 artış'},
+  {name:'Rusya (Avrupa)',lat:56,lon:50,risk:'mid',cases:8000,deaths:null,virus:'Puumala / Dobrava',note:'Yıllık endemik (~8000 vaka/yıl)'},
+  {name:'Çin (Kuzey/Kuzeydoğu)',lat:42,lon:120,risk:'mid',cases:null,deaths:null,virus:'Hantaan / Seoul',note:'Endemik; yıllık binlerce HFRS vakası'},
+  {name:'Paraguay (Boquerón)',lat:-22,lon:-60,risk:'mid',cases:26,deaths:null,virus:'Andes',note:'2025 yol yapım salgını'},
+  {name:'Güney Şili',lat:-40,lon:-72,risk:'mid',cases:null,deaths:null,virus:'Andes',note:'Yıllık endemik bölge'},
+  {name:'Türkiye',lat:39,lon:35,risk:'low',cases:0,deaths:null,virus:'—',note:'Kayda değer vaka yok; düşük risk'},
+  {name:'Almanya / Orta Avrupa',lat:51,lon:10,risk:'low',cases:null,deaths:null,virus:'Puumala',note:'Yüzlerce hafif HFRS vakası / yıl'},
+];
+
+function fmtCases(n) {
+  if(!n) return null;
+  if(n >= 1000) return (n/1000).toFixed(1).replace('.0','')+'k';
+  return String(n);
+}
+
+function getColor(risk) {
+  if(risk==='high') return '#e85d3a';
+  if(risk==='mid') return '#f5c518';
+  return '#4caf7d';
+}
+
+/* ===== MAP ===== */
+let mapSvg = null, mapProjection = null, clockInterval = null;
+let userLat = null, userLon = null;
+let mapOpen = false;
+
+async function openMap() {
+  document.getElementById('mapOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  mapOpen = true;
+  startClock();
+  if(!mapSvg) await buildMap();
+}
+
+function closeMap() {
+  document.getElementById('mapOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  mapOpen = false;
+  if(clockInterval) { clearInterval(clockInterval); clockInterval = null; }
+}
+
+function closeMapOutside(e) {
+  if(e.target === document.getElementById('mapOverlay')) closeMap();
+}
+
+function startClock() {
+  function tick() {
+    const now = new Date();
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.getElementById('mapClockTime').textContent = now.toLocaleTimeString('tr-TR', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    document.getElementById('mapClockTz').textContent = '⏱ ' + tz;
+    document.getElementById('mapDateStr').textContent = now.toLocaleDateString('tr-TR', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  }
+  tick();
+  clockInterval = setInterval(tick, 1000);
+}
+
+async function buildMap() {
+  const wrap = document.getElementById('mapSvgWrap');
+  const W = wrap.clientWidth || 960;
+  const H = Math.min(460, Math.round(W * 0.46));
+
+  try {
+    const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r => r.json());
+    const countries = topojson.feature(world, world.objects.countries);
+    const land = topojson.mesh(world, world.objects.countries, (a,b) => a !== b);
+
+    const projection = d3.geoNaturalEarth1()
+      .scale(W / 6.1)
+      .translate([W / 2, H / 2]);
+    mapProjection = projection;
+
+    const pathGen = d3.geoPath().projection(projection);
+
+    const svg = d3.create('svg')
+      .attr('width', W).attr('height', H)
+      .attr('viewBox', `0 0 ${W} ${H}`)
+      .style('display','block');
+
+    // Ocean
+    svg.append('rect').attr('width',W).attr('height',H).attr('fill','#060e18');
+
+    // Sphere glow
+    svg.append('path')
+      .datum({type:'Sphere'})
+      .attr('d', pathGen)
+      .attr('fill','rgba(91,156,246,0.03)')
+      .attr('stroke','rgba(91,156,246,0.15)')
+      .attr('stroke-width',1);
+
+    // Graticule
+    const graticule = d3.geoGraticule10();
+    svg.append('path')
+      .datum(graticule)
+      .attr('d', pathGen)
+      .attr('fill','none')
+      .attr('stroke','rgba(255,255,255,0.04)')
+      .attr('stroke-width',0.5);
+
+    // Countries fill
+    svg.selectAll('.country')
+      .data(countries.features)
+      .join('path')
+      .attr('class','country')
+      .attr('d', pathGen)
+      .attr('fill','#192232')
+      .attr('stroke','none');
+
+    // Country borders
+    svg.append('path')
+      .datum(land)
+      .attr('d', pathGen)
+      .attr('fill','none')
+      .attr('stroke','#2a3d55')
+      .attr('stroke-width',0.5);
+
+    // Outbreak markers
+    OUTBREAKS.forEach((ob, idx) => {
+      const coords = projection([ob.lon, ob.lat]);
+      if(!coords) return;
+      const [x, y] = coords;
+      const color = getColor(ob.risk);
+      const baseR = ob.risk==='high' ? 5.5 : ob.risk==='mid' ? 4 : 3;
+      const rings = ob.risk==='high' ? 3 : 2;
+
+      const g = svg.append('g')
+        .attr('transform', `translate(${x},${y})`)
+        .style('cursor','pointer');
+
+      // Sonar rings
+      for(let r=0; r<rings; r++) {
+        g.append('circle')
+          .attr('r', baseR)
+          .attr('fill','none')
+          .attr('stroke', color)
+          .attr('stroke-width', ob.risk==='high' ? 1.5 : 1)
+          .attr('class', `sonar-r sonar-d${r}`)
+          .attr('opacity', 0.75);
+      }
+
+      // Core dot with inner glow
+      g.append('circle').attr('r', baseR*1.6).attr('fill', color).attr('opacity', 0.15);
+      g.append('circle').attr('r', baseR).attr('fill', color).attr('opacity', 0.95);
+
+      // Case count label
+      const label = fmtCases(ob.cases);
+      if(label) {
+        g.append('text')
+          .attr('y', -(baseR + 5))
+          .attr('text-anchor','middle')
+          .attr('fill', color)
+          .attr('font-size', ob.risk==='high' ? '8' : '7')
+          .attr('font-family',"'Space Mono',monospace")
+          .attr('font-weight','700')
+          .text(label);
+      }
+
+      // Tooltip
+      g.on('mouseenter', function(event) {
+        const tip = document.getElementById('mapTooltip');
+        const wrapRect = wrap.getBoundingClientRect();
+        const svgEl = svg.node();
+        const svgRect = svgEl.getBoundingClientRect();
+        const mx = event.clientX - wrapRect.left + 12;
+        const my = event.clientY - wrapRect.top - 10;
+        const riskTr = ob.risk==='high'?'🔴 YÜKSEK RİSK':ob.risk==='mid'?'🟡 ORTA RİSK':'🟢 DÜŞÜK RİSK';
+        tip.innerHTML = `<strong style="color:var(--text);font-size:.82rem">${ob.name}</strong><br>
+          <span style="color:var(--muted);font-size:.7rem">${riskTr} — ${ob.virus}</span><br>
+          ${ob.cases ? `<span style="color:var(--accent);font-size:.72rem">Vaka: ${ob.cases.toLocaleString()}${ob.deaths?' / Ölüm: '+ob.deaths:''}</span><br>` : ''}
+          <span style="font-size:.68rem;color:var(--muted)">${ob.note}</span>`;
+        tip.style.left = Math.min(mx, W-220)+'px';
+        tip.style.top = Math.max(my-60, 4)+'px';
+        tip.classList.add('show');
+      });
+      g.on('mouseleave', function() {
+        document.getElementById('mapTooltip').classList.remove('show');
+      });
+    });
+
+    // User location placeholder group
+    svg.append('g').attr('id','userMarker').attr('display','none');
+
+    wrap.innerHTML = '';
+    wrap.appendChild(svg.node());
+    mapSvg = svg;
+
+    // If we already have geo
+    if(userLat !== null) addUserMarker();
+
+  } catch(err) {
+    document.getElementById('mapLoading').innerHTML = '⚠ Harita yüklenemedi. İnternet bağlantınızı kontrol edin.';
+  }
+}
+
+function requestGeo() {
+  document.getElementById('geoPermBar').innerHTML = '<span style="font-family:var(--mono);font-size:.7rem;color:var(--muted)">📍 Konum alınıyor...</span>';
+  navigator.geolocation.getCurrentPosition(pos => {
+    userLat = pos.coords.latitude;
+    userLon = pos.coords.longitude;
+    document.getElementById('geoPermBar').style.display = 'none';
+    if(mapSvg) addUserMarker();
+  }, err => {
+    document.getElementById('geoPermBar').innerHTML = '<span style="font-family:var(--mono);font-size:.7rem;color:var(--muted)">Konum izni reddedildi.</span>';
+  });
+}
+
+function addUserMarker() {
+  if(!mapProjection || userLat === null) return;
+  const coords = mapProjection([userLon, userLat]);
+  if(!coords) return;
+  const [x, y] = coords;
+  const g = mapSvg.select('#userMarker').attr('display','block').attr('transform',`translate(${x},${y})`);
+  g.append('circle').attr('r',4).attr('fill','#5b9cf6').attr('opacity',0.9);
+  g.append('circle').attr('r',4).attr('fill','none').attr('stroke','#5b9cf6').attr('stroke-width',1).attr('class','sonar-r').attr('opacity',0.6);
+  g.append('text').attr('y',-9).attr('text-anchor','middle').attr('fill','#5b9cf6').attr('font-size','7').attr('font-family',"'Space Mono',monospace").text('SİZ');
+}
+
+/* ===== CHAT ===== */
+let chatHistory = [];
+let chatBusy = false;
+
+const CHAT_SYSTEM = `Sen HantaInfo isimli küresel bir sağlık bilgi platformunun yapay zeka asistanısın.
+Hantavirüs hakkında kısa, anlaşılır, bilimsel Türkçe yanıtlar veriyorsun.
+Güncel: Mayıs 2026'da MV Hondius cruise gemisinde Andes salgını — 13 vaka, 3 ölüm, 32 ülkede 600+ kontakt.
+Arjantin 2025/26: 101 vaka, 32 ölüm. Finlandiya: ~1200 vaka/yıl (Q1 2026 artış). Türkiye riski düşük.
+Yanıtları 2-4 cümle tut. Tıbbi tanı verme. Kaynaklar: WHO, CDC, ECDC.`;
+
+function toggleChat() {
+  const w = document.getElementById('chatWindow');
+  w.classList.toggle('open');
+  if(w.classList.contains('open')) { document.getElementById('chat-input').focus(); scrollChatBottom(); }
+}
+
+function scrollChatBottom() {
+  const m = document.getElementById('chatMessages');
+  setTimeout(()=>{ m.scrollTop = m.scrollHeight; }, 60);
+}
+
+function addMsg(text, role) {
+  const m = document.getElementById('chatMessages');
+  const d = document.createElement('div');
+  d.className = 'chat-msg ' + role;
+  d.textContent = text;
+  m.appendChild(d);
+  scrollChatBottom();
+  return d;
+}
+
+async function sendChat() {
+  if(chatBusy) return;
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  chatBusy = true;
+  document.getElementById('chat-send-btn').disabled = true;
+
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+  const thinkDiv = addMsg('Yanıt hazırlanıyor...', 'thinking');
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system: CHAT_SYSTEM,
+        messages: chatHistory
+      })
+    });
+    const data = await resp.json();
+    const answer = data.content && data.content[0] ? data.content[0].text : 'Yanıt alınamadı.';
+    thinkDiv.remove();
+    addMsg(answer, 'ai');
+    chatHistory.push({role:'assistant', content:answer});
+    if(chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+  } catch(e) {
+    thinkDiv.textContent = 'Bağlantı hatası. Tekrar deneyin.';
+    thinkDiv.style.color = 'var(--accent)';
+  }
+  chatBusy = false;
+  document.getElementById('chat-send-btn').disabled = false;
+}
+
+function sendQuick(q) {
+  const w = document.getElementById('chatWindow');
+  if(!w.classList.contains('open')) w.classList.add('open');
+  document.getElementById('chat-input').value = q;
+  sendChat();
+}
+</script>
+</body>
+</html>
